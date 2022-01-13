@@ -5,17 +5,37 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+      .action {
+        display: flex;
+        height: 25px;
+      }
+      a, input[type=submit] {
+        height: 25px;
+        margin: 0 30px 0 0; 
+      }
+      a, li{
+        margin: 10px; 
+      }
+      </style>
 </head>
 <body>
-
-    <div> Check Todo Details </div>
-    <ul>
-    <% @todos.each do |todo| %>
-    <li>
-        <%= link_to todo.name, todo %>
-    </li>
-    <% end %>
-    </ul>
-    <%= link_to "New Todo", new_todo_path %>
+        <h1>Welcome</h1>
+        <div> Check Todo Details </div>
+        <% if signed_in? %>
+        <div id="index-content">
+            <% 
+            @todos = Todo.where(user_id: current_user.id)
+            %>
+            <% @todos.each_with_index  do |todo, index| %>
+                <li>
+                    <%= link_to "#{index + 1}." + todo.title, todo %>
+                </li>
+            <% end %>
+        </div>
+        <% end %>
+        <div class="action"> 
+            <%= link_to "TODOを新規作成", new_todo_path, method: :get %>
+        </div>
 </body>
 </html>

@@ -1,6 +1,7 @@
 class TodosController < ApplicationController
 
-    http_basic_authenticate_with name: "dhh", password: "secret", except: [:index, :show]
+    before_action :require_login
+    # http_basic_authenticate_with name: "dhh", password: "secret", except: [:index, :show]
 
     def index
       @articles = Article.all
@@ -19,6 +20,7 @@ class TodosController < ApplicationController
     end
     def create
       @todo = Todo.new(todo_params)
+      @todo.user_id = current_user.id
       if @todo.save
         redirect_to @todo
       else
